@@ -1,0 +1,38 @@
+name: email-triage-env
+description: RL environment for email triage
+version: 0.1
+
+entry_point: environment:EmailEnv
+
+observation_space:
+  type: object
+  properties:
+    email_text:
+      type: string
+    sender:
+      type: string
+    subject:
+      type: string
+    step_count:
+      type: integer
+
+action_space:
+  type: object
+  properties:
+    category:
+      type: string
+    priority:
+      type: string
+    action:
+      type: string
+
+reward_space:
+  type: number
+
+tasks:
+  - name: spam-detection
+    difficulty: easy
+  - name: priority-assignment
+    difficulty: medium
+  - name: full-triage
+    difficulty: hard

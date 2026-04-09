@@ -13,5 +13,5 @@ def grade_action(action, email, step_count):
         score -= 0.5
     score -= 0.01 * step_count
 
-    score = max(0.0, min(1.0, score))
+    score = max(0.0, min(0.99, score))
     return score, "graded"

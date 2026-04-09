@@ -34,7 +34,7 @@ def parse_action(text: str):
 # MAIN LOOP
 # =========================
 def run():
-    env = EmailEnv(mode="hard")
+    env = EmailEnv(mode="all")
     obs = env.reset()
 
     print(f"[START] task=full-triage env=email-env model={MODEL_NAME}")

@@ -3,12 +3,24 @@ from grader import grade_action
 
 MAX_STEPS = 10
 
+
 class EmailEnv:
     def __init__(self, mode="easy"):
         self.mode = mode
-        self.dataset = EMAILS[mode]
+
+        # ✅ FIX: support ALL tasks
+        if mode == "all":
+            self.dataset = (
+                EMAILS["easy"] +
+                EMAILS["medium"] +
+                EMAILS["hard"]
+            )
+        else:
+            self.dataset = EMAILS[mode]
+
         self.index = 0
         self.step_count = 0
+        self.current = None
 
     def reset(self):
         self.index = 0
@@ -25,10 +37,16 @@ class EmailEnv:
     def step(self, action):
         self.step_count += 1
 
+        # ✅ ALWAYS grade
         score, _ = grade_action(action, self.current, self.step_count)
 
+        # ✅ move to next task
         self.index += 1
-        done = self.index >= len(self.dataset) or self.step_count >= MAX_STEPS
+
+        done = (
+            self.index >= len(self.dataset)
+            or self.step_count >= MAX_STEPS
+        )
 
         if not done:
             self.current = self.dataset[self.index]
@@ -44,4 +62,9 @@ class EmailEnv:
         return obs, float(score), done, {}
 
     def state(self):
-        return self.current
+        return {
+            "current_email": self.current,
+            "step_count": self.step_count,
+            "index": self.index,
+            "mode": self.mode
+        }
